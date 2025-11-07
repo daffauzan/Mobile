@@ -35,7 +35,7 @@ class _KalkulatorPageState extends State<KalkulatorPage> {
           ContextModel cm = ContextModel();
           final result = exp.evaluate(EvaluationType.REAL, cm);
 
-          if (result == result.toInt()){
+          if (result == result.toInt()) {
             output = result.toInt().toString();
           } else {
             output = result.toString();
@@ -53,26 +53,31 @@ class _KalkulatorPageState extends State<KalkulatorPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Output area
+        // Area output
         Container(
           padding: const EdgeInsets.all(24),
           alignment: Alignment.bottomRight,
           color: const Color(0xFF86469C),
           height: 210,
-          child: Text(
-            output,
-            style: const TextStyle(
-              fontSize: 42,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          width: double.infinity,
+          child: SingleChildScrollView(
+            reverse: true,
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              output,
+              style: const TextStyle(
+                fontSize: 42,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
-        // Fixed-size GridView for buttons
-        SizedBox(
-          height: MediaQuery.of(context).size.height - 160 - kBottomNavigationBarHeight - 80,
+
+        // Area tombol
+        Expanded(
           child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(), // Disable scrolling
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(12),
             itemCount: buttons.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -82,27 +87,29 @@ class _KalkulatorPageState extends State<KalkulatorPage> {
             ),
             itemBuilder: (context, index) {
               final btnText = buttons[index];
-              final bool isOperator = ["C", "⌫", "%", "/", "x", "-", "+", "EXE"].contains(btnText);
+              final bool isOperator =
+                  ["C", "⌫", "%", "/", "x", "-", "+", "EXE"].contains(btnText);
 
-              return btnText.isEmpty
-                  ? const SizedBox.shrink()
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFB9AD1),
-                        foregroundColor: isOperator ? Colors.white : Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () => buttonPressed(btnText),
-                      child: Text(
-                        btnText,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: isOperator ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                    );
+              if (btnText.isEmpty) return const SizedBox.shrink();
+
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFB9AD1),
+                  foregroundColor: isOperator ? Colors.white : Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () => buttonPressed(btnText),
+                child: Text(
+                  btnText,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight:
+                        isOperator ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+              );
             },
           ),
         ),
