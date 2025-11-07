@@ -25,6 +25,7 @@ flutter:
     - assets/icons/
     - assets/images/icon_me.png
     - assets/images/kim_jong_un.png
+    - assets/images/teks.png
   
   fonts:
     - family: Poppins
