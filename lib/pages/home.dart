@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simobile/pages/homeindexpage.dart';
 
-// Halaman yang kamu buat
 import 'biodata.dart';
 import 'kontak.dart';
 import 'berita.dart';
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = -1; 
 
   static final List<Widget> _pages = [
-    const Center(child: Text('Halaman Beranda')),
+    const HomeIndexPage(),
     const BiodataPage(),
     const KontakPage(),
     const BeritaPage(),

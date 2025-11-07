@@ -3,9 +3,23 @@ import 'package:flutter/material.dart';
 class HomeIndexPage extends StatelessWidget {
   const HomeIndexPage({super.key});
 
+  // Widget untuk info kecil di cuaca
+  Widget _infoTile(IconData icon, String label, String value) {
+    return Column(
+      children: [
+        Icon(icon, color: Colors.blueAccent),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(fontSize: 14, color: Colors.black54)),
+        const SizedBox(height: 2),
+        Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final weatherData = {
+    // Data cuaca
+    final mainCity = {
       'name': 'Bandung',
       'temperature': 32,
       'humidity': 70,
@@ -14,10 +28,23 @@ class HomeIndexPage extends StatelessWidget {
       'icon': Icons.wb_sunny_outlined,
     };
 
+    // Data berita statis
     final newsList = [
-      {'title': 'Berita 1', 'snippet': 'Ini cuplikan berita 1...'},
-      {'title': 'Berita 2', 'snippet': 'Ini cuplikan berita 2...'},
-      {'title': 'Berita 3', 'snippet': 'Ini cuplikan berita 3...'},
+      {
+        "judul": "Korea Utara Luncurkan Rudal ke 1 Negara",
+        "tanggal": "2025-11-01",
+        "author": "Kim Jong News",
+      },
+      {
+        "judul": "Korea Utara Luncurkan Rudal ke 2 Negara",
+        "tanggal": "2025-11-02",
+        "author": "Kim Jong News",
+      },
+      {
+        "judul": "Korea Utara Luncurkan Rudal ke 3 Negara",
+        "tanggal": "2025-11-03",
+        "author": "Kim Jong News",
+      },
     ];
 
     return SingleChildScrollView(
@@ -27,7 +54,7 @@ class HomeIndexPage extends StatelessWidget {
         children: [
           TextField(
             decoration: InputDecoration(
-              hintText: 'Cari berita...',
+              hintText: 'Cari...',
               prefixIcon: const Icon(Icons.search),
               filled: true,
               fillColor: Colors.grey[200],
@@ -47,25 +74,39 @@ class HomeIndexPage extends StatelessWidget {
               color: Colors.purple[50],
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Row(
+            child: Column(
               children: [
-                Icon(weatherData['icon'] as IconData, size: 48, color: Colors.orange),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Text(
+                  mainCity['name'] as String,
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Icon(mainCity['icon'] as IconData, size: 64, color: Colors.orange),
+                const SizedBox(height: 8),
+                Text(
+                  '${mainCity['temperature']}°C',
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                Text(
+                  mainCity['condition'] as String,
+                  style: const TextStyle(fontSize: 18, color: Colors.black54),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      weatherData['name'] as String,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${weatherData['temp']}°C - ${weatherData['desc']}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                    _infoTile(Icons.water_drop, 'Kelembaban', '${mainCity['humidity']}%'),
+                    _infoTile(Icons.air, 'Angin', '${mainCity['wind']} km/h'),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -78,38 +119,51 @@ class HomeIndexPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          Column(
-            children: newsList.map((news) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: const Offset(0, 2)),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      news['title'] ?? 'No Title',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      news['snippet'] ?? '',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: newsList.length,
+              itemBuilder: (context, index) {
+                final news = newsList[index];
+                return Container(
+                  width: 250,
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2)),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        news['judul']!,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        news['author']!,
+                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                      Text(
+                        news['tanggal']!,
+                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
