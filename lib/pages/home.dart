@@ -71,47 +71,24 @@ class _HomePageState extends State<HomePage> {
           onPressed: _onHomeAppBarTapped,
         ),
       ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(opacity: animation, child: child);
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _bottomNavIndex == -1 ? 0 : _bottomNavIndex,
+        onTap: (index) {
+          _navigateToPage(index + 1, index);
         },
-        child: _pages[_selectedIndex],
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.purple,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Biodata'),
+          BottomNavigationBarItem(icon: Icon(Icons.contact_phone), label: 'Kontak'),
+          BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Berita'),
+          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: 'Cuaca'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Kalkulator'),
+        ],
       ),
-      bottomSheet: Container(
-        color: Colors.white,
-        height: kBottomNavigationBarHeight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(5, (index) {
-            bool isSelected = _bottomNavIndex == index;
-            final labels = ['Biodata','Kontak','Berita','Cuaca','Kalkulator'];
-            final icons = [Icons.person, Icons.contact_phone, Icons.newspaper, Icons.cloud, Icons.calculate];
 
-            return GestureDetector(
-              onTap: () {
-                _navigateToPage(index + 1, index);
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icons[index], color: isSelected ? Colors.purple : Colors.grey),
-                  const SizedBox(height: 2),
-                  AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 300),
-                    style: TextStyle(
-                      color: isSelected ? Colors.purple : Colors.grey,
-                      fontSize: isSelected ? 14 : 12,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    ),
-                    child: Text(labels[index]),
-                  ),
-                ],
-              ),
-            );
-          }),
-        ),
-      ),
     );
   }
 }
