@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627408638546",
+    "project_id": "jackson-uts-e1822",
+    "storage_bucket": "jackson-uts-e1822.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627408638546:android:24c65da642ce8c9cb8c58b",
+        "android_client_info": {
+          "package_name": "com.example.uts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCDN6c2HO9FZQUSiwu9jG-dD6xys_GevA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
