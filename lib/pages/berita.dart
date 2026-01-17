@@ -1,64 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BeritaPage extends StatefulWidget {
+class BeritaPage extends StatelessWidget {
   const BeritaPage({super.key});
 
   @override
-  State<BeritaPage> createState() => _BeritaPageState();
-}
-
-class _BeritaPageState extends State<BeritaPage> {
-  @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> beritaList = List.generate(
-      15,
-      (index) => {
-        "judul": "Korea Utara Luncurkan Rudal ke ${index + 1} Negara",
-        "tanggal": "2025-11-${(index + 1).toString().padLeft(2, '0')}",
-        "author": "Kim Jong News",
-      },
-    );
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('berita')
+          .orderBy('createdAt', descending: true)
+          .snapshots(),
 
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-      itemCount: beritaList.length,
-      itemBuilder: (context, index) {
-        final berita = beritaList[index];
-        return Card(
-          elevation: 3,
-          margin: const EdgeInsets.only(bottom: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: ListTile(
-            leading: const CircleAvatar(
-              radius: 26,
-              backgroundColor: Colors.purple,
-              child: Icon(
-                Icons.newspaper,
-                color: Colors.white,
-                size: 28,
+      builder: (context, snapshot) {
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("Tidak ada berita"));
+        }
+
+        final beritaList = snapshot.data!.docs;
+
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+          itemCount: beritaList.length,
+          itemBuilder: (context, index) {
+            final data = beritaList[index].data() as Map<String, dynamic>;
+
+            return Card(
+              elevation: 3,
+              margin: const EdgeInsets.only(bottom: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-            ),
-            title: Text(
-              berita["judul"]!,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Author: ${berita["author"]}"),
-                Text(
-                  berita["tanggal"]!,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+              child: ListTile(
+                leading: const CircleAvatar(
+                  radius: 26,
+                  backgroundColor: Colors.purple,
+                  child: Icon(Icons.newspaper, color: Colors.white),
                 ),
-              ],
-            ),
-            isThreeLine: true,
-          ),
+                title: Text(
+                  data['judul'] ?? '-',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  data['isi'] ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            );
+          },
         );
       },
     );

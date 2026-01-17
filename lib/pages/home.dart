@@ -7,6 +7,7 @@ import 'kontak.dart';
 import 'berita.dart';
 import 'cuaca.dart';
 import 'kalkulator.dart';
+import 'about.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,31 +22,82 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> _pages = [
     const HomeIndexPage(),
-    const BiodataPage(),
     const KontakPage(),
     const BeritaPage(),
     const CuacaPage(),
     const KalkulatorPage(),
+    const AboutPage(),
+    const BiodataPage(),
+
   ];
 
   static const List<String> _titles = [
     'Beranda',
-    'Biodata',
     'Kontak',
     'Berita',
     'Cuaca',
     'Kalkulator',
+    'Tentang',
+    'Biodata',
   ];
 
   void _onHomeAppBarTapped() {
-    _navigateToPage(0, -1);
+    setState((){
+      _selectedIndex = 0;
+      _bottomNavIndex = -1;
+    });
   }
 
   void _navigateToPage(int selectedIndex, int bottomNavIndex) {
     setState(() {
       _selectedIndex = selectedIndex;
-      _bottomNavIndex = selectedIndex == 0 ? -1 : bottomNavIndex;
+      _bottomNavIndex = bottomNavIndex;
     });
+  }
+
+  void navigateFromMoreMenu(int index) {
+    Navigator.pop(context);
+    setState(() {
+      _selectedIndex = index;
+      _bottomNavIndex = -1;
+    });
+  }
+
+  void _showMoreMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.calculate),
+              title: const Text('Kalkulator'),
+              onTap: () {
+                navigateFromMoreMenu(4);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Tentang'),
+              onTap: () {
+                navigateFromMoreMenu(5);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Biodata'),
+              onTap: () {
+                navigateFromMoreMenu(6);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -75,17 +127,20 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _bottomNavIndex == -1 ? 0 : _bottomNavIndex,
         onTap: (index) {
-          _navigateToPage(index + 1, index);
+          if (index == 3) {
+            _showMoreMenu(context);
+          } else {
+            _navigateToPage(index + 1, index);
+          }
         },
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.purple,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Biodata'),
           BottomNavigationBarItem(icon: Icon(Icons.contact_phone), label: 'Kontak'),
           BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Berita'),
           BottomNavigationBarItem(icon: Icon(Icons.cloud), label: 'Cuaca'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Kalkulator'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Lainnya'),
         ],
       ),
 
