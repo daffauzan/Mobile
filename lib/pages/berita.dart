@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'berita_isi.dart';
+
 class BeritaPage extends StatelessWidget {
   const BeritaPage({super.key});
 
@@ -54,6 +56,14 @@ class BeritaPage extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BeritaIsiPage(data: data),
+                    ),
+                  );
+                },
               ),
             );
           },
