@@ -67,19 +67,20 @@ class KontakPage extends StatelessWidget {
                       Text(data['no_telp']),
                     ],
                   ),
-                  trailing: const Icon(
-                    Icons.edit,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
                     color: Colors.black,
-                    ),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => EditKontakDialog(
-                        id: docs[index].id,
-                        data: data,
-                      ),
-                    );
-                  },
+                    tooltip: 'Edit Kontak',
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => EditKontakDialog(
+                          id: docs[index].id, 
+                          data: data
+                          ),
+                      );
+                    },
+                  ),
                 )
               );
             },
