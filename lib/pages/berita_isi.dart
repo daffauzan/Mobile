@@ -15,6 +15,9 @@ class BeritaIsiPage extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.purple,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -22,7 +25,6 @@ class BeritaIsiPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Judul utama berita
               Text(
                 data['judul'] ?? '-',
                 style: const TextStyle(
@@ -33,7 +35,6 @@ class BeritaIsiPage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // Card isi berita
               Card(
                 elevation: 3,
                 shape: RoundedRectangleBorder(
