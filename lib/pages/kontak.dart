@@ -12,7 +12,10 @@ class KontakPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () {
           showDialog(
             context: context,
@@ -64,6 +67,10 @@ class KontakPage extends StatelessWidget {
                       Text(data['no_telp']),
                     ],
                   ),
+                  trailing: const Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                    ),
                   onTap: () {
                     showDialog(
                       context: context,
